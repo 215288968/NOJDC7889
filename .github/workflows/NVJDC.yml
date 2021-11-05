@@ -30,11 +30,11 @@ jobs:
        env:
          FRPC_INI: ${{secrets.FRPC_INI}}
 
-     - run: 'echo "$ENV_PROPERTIES" > env.properties'
+     - run: 'echo "$CONFIG" > Config.json'
        if: ${{ failure() }}
        shell: bash
        env:
-         ENV_PROPERTIES: ${{secrets.ENV_PROPERTIES}}
+         ENV_PROPERTIES: ${{secrets.CONFIG}}
          
      - name: Start FRP
        if: ${{ failure() }}
@@ -46,9 +46,11 @@ jobs:
      - name: Start Docker
        if: ${{ failure() }}
        run: |
-         sudo service nginx restart
-         docker pull selenoid/chrome:89.0
-         docker run -d -p 5701:8080 -p 4444:4444 --name=webapp --privileged=true -v /var/run/docker.sock:/var/run/docker.sock -v "$(pwd)"/env.properties:/env.properties:ro rubyangxg/jd-qinglong:latest
+         mkdir -p  local-chromium/Linux-884014 && cd local-chromium/Linux-884014
+         wget https://mirrors.huaweicloud.com/chromium-browser-snapshots/Linux_x64/884014/chrome-linux.zip && unzip chrome-linux.zip
+         cd ../..
+         docker pull nolanhzy/nvjdc:0.5
+         docker run   --name nolanjdc -p 5701:80 -d  -v  "$(pwd)"/Config.json:/app/Config/Config.json:ro -v "$(pwd)"/.local-chromium:/app/.local-chromium -it --privileged=true  nolanhzy/nvjdc:0.5
          docker ps
          # docker logs -f webapp
          
