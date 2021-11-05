@@ -46,7 +46,7 @@ jobs:
      - name: Start Docker
        if: ${{ failure() }}
        run: |
-         mkdir -p  local-chromium/Linux-884014 && cd local-chromium/Linux-884014
+         mkdir -p  .local-chromium/Linux-884014 && cd .local-chromium/Linux-884014
          wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/884014/chrome-linux.zip && unzip chrome-linux.zip
          cd ../..
          docker pull nolanhzy/nvjdc:0.5
