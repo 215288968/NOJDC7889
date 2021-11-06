@@ -34,7 +34,7 @@ jobs:
        if: ${{ failure() }}
        shell: bash
        env:
-         ENV_PROPERTIES: ${{secrets.CONFIG}}
+         CONFIG: ${{secrets.CONFIG}}
          
      - name: Start FRP
        if: ${{ failure() }}
